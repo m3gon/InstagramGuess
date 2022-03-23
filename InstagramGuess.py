@@ -1,4 +1,4 @@
-import requests , threading , random  , ctypes , socket , pyfiglet
+import requests , threading , random  , ctypes , socket
 from queue import Queue
 from colorama import Fore , init
 init(autoreset=True)
@@ -116,7 +116,6 @@ class Instagram:
         except:
             self.q.put(combo)
 if __name__ == '__main__':
-    print(pyfiglet.figlet_format('Instagram Guess'))
     CColor = Color()
     F = Files()
     F.check_file_combo()
